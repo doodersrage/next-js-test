@@ -1,14 +1,17 @@
-import Link from 'next/link'
+'use client'
+import { use } from 'react'
  
-export default async function Post({ post }) {
-  const posts = await getPosts()
+export default function Posts({
+  posts,
+}: {
+  posts: Promise<{ id: string; title: string }[]>
+}) {
+  const allPosts = use(posts)
  
   return (
     <ul>
-      {posts.map((post) => (
-        <li key={post.slug}>
-          <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-        </li>
+      {allPosts.map((post) => (
+        <li key={post.id}>{post.title}</li>
       ))}
     </ul>
   )

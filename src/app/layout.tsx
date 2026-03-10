@@ -1,16 +1,17 @@
-import Link from 'next/link'
+import UserProvider from './user-provider'
+import { getUser } from './lib/user'
  
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const userPromise = getUser() // Don't await
+ 
   return (
     <html>
       <body>
-        <nav>
-          {/* Prefetched when the link is hovered or enters the viewport */}
-          <Link href="/blog">Blog</Link>
-          {/* No prefetching */}
-          <a href="/contact">Contact</a>
-        </nav>
-        {children}
+        <UserProvider userPromise={userPromise}>{children}</UserProvider>
       </body>
     </html>
   )
