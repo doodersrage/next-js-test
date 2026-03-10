@@ -1,8 +1,8 @@
 import { cache } from 'react'
-import { db, posts, eq } from '@/lib/db'
+import { db } from '@/app/lib/db'
  
-export const getPost = cache(async (id: string) => {
-  const post = await db.query.posts.findFirst({
-    where: eq(posts.id, parseInt(id)),
-  })
+// getPost will be used twice, but execute only once
+export const getPost = cache(async (slug: string) => {
+  const res = await db.query.posts.findFirst({ where: eq(posts.slug, slug) })
+  return res
 })

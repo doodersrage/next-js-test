@@ -1,9 +1,7 @@
 export default function Page() {
-  // Server Action
-  async function createPost(formData: FormData) {
-    'use server'
-    // ...
-  }
- 
-  return <></>
+  return <h1>Hello, Next.js!</h1>
 }
+ 
+// Conflict
+// `app/route.ts`
+export async function POST(request: Request) {}

@@ -1,17 +1,10 @@
-import UserProvider from './user-provider'
-import { getUser } from './lib/user'
+import { ContextProvider } from 'auth-lib'
  
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const userPromise = getUser() // Don't await
- 
+export default function RootLayout({ children }) {
   return (
-    <html>
+    <html lang="en">
       <body>
-        <UserProvider userPromise={userPromise}>{children}</UserProvider>
+        <ContextProvider>{children}</ContextProvider>
       </body>
     </html>
   )

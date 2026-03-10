@@ -1,21 +1,25 @@
-import { Suspense } from 'react'
-import BlogList from '@/components/BlogList'
-import BlogListSkeleton from '@/components/BlogListSkeleton'
+import type { Metadata, ResolvingMetadata } from 'next'
  
-export default function BlogPage() {
-  return (
-    <div>
-      {/* This content will be sent to the client immediately */}
-      <header>
-        <h1>Welcome to the Blog</h1>
-        <p>Read the latest posts below.</p>
-      </header>
-      <main>
-        {/* If there's any dynamic content inside this boundary, it will be streamed in */}
-        <Suspense fallback={<BlogListSkeleton />}>
-          <BlogList />
-        </Suspense>
-      </main>
-    </div>
-  )
+type Props = {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
+ 
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const slug = (await params).slug
+ 
+  // fetch post information
+  const post = await fetch(`https://api.vercel.app/blog/${slug}`).then((res) =>
+    res.json()
+  )
+ 
+  return {
+    title: post.title,
+    description: post.description,
+  }
+}
+ 
+export default function Page({ params, searchParams }: Props) {}

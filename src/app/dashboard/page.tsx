@@ -1,6 +1,15 @@
-import { getUser } from '../lib/user'
+import { verifySession } from '@/app/lib/dal'
  
 export default async function DashboardPage() {
-  const user = await getUser() // Cached - same request, no duplicate fetch
-  return <h1>Dashboard for {user.name}</h1>
+  const session = await verifySession()
+ 
+  // Fetch user-specific data from your database or data source
+  const user = await getUserData(session.userId)
+ 
+  return (
+    <div>
+      <h1>Welcome, {user.name}</h1>
+      {/* Dashboard content */}
+    </div>
+  )
 }

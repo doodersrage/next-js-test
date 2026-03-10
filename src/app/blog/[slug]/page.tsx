@@ -1,16 +1,18 @@
-export async function generateStaticParams() {
-  const posts = await fetch('https://.../posts').then((res) => res.json())
+import { getPost } from '@/app/lib/data'
  
-  return posts.map((post) => ({
-    slug: post.slug,
-  }))
-}
- 
-export default async function Page({
+export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }) {
-  const { slug } = await params
-  // ...
+  const post = await getPost(params.slug)
+  return {
+    title: post.title,
+    description: post.description,
+  }
+}
+ 
+export default async function Page({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug)
+  return <div>{post.title}</div>
 }
